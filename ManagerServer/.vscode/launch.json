@@ -18,7 +18,8 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/src/Launcher.ts"
+            // "program": "${workspaceFolder}/src/Launcher.ts"
+            "program": "${file}"
         }
     ]
 }
