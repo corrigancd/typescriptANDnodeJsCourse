@@ -1,5 +1,16 @@
 // this is an input file for the "REST Client" (similar to postman) VsCode extension:
 
+//login successful request
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+    "username": "john",
+    "password": "1234"
+}
+
+### // this is how to delimit requests
+// failing login request
 POST http://localhost:8080/login
 Content-Type: application/json
 
