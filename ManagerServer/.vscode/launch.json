@@ -13,7 +13,7 @@
                 "ts-node/register",
             ],
             "args": [
-                "${workspaceFolder}/src/Launcher.ts"
+                // "${workspaceFolder}/src/Launcher.ts"
             ],
             "skipFiles": [
                 "<node_internals>/**"
