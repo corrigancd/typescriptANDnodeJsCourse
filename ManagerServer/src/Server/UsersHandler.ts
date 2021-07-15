@@ -1,16 +1,23 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { BaseRequestHandler } from "./BaseRequestHandler";
 import { UsersDBAccess } from "../User/UsersDBAccess";
-import { HTTP_CODES, HTTP_METHODS } from "../Shared/Model";
+import { AccessRight, HTTP_CODES, HTTP_METHODS } from "../Shared/Model";
 import { Utils } from "./Utils";
+import { TokenValidator } from "./Model";
 
 export class UsersHandler extends BaseRequestHandler {
   private usersDBAccess: UsersDBAccess = new UsersDBAccess();
+  private tokenValidator: TokenValidator;
 
-  public constructor(req: IncomingMessage, res: ServerResponse) {
+  public constructor(
+    req: IncomingMessage,
+    res: ServerResponse,
+    tokenValidator: TokenValidator
+  ) {
     super(req, res);
     this.req = req;
     this.res = res;
+    this.tokenValidator = tokenValidator;
   }
 
   async handleRequest(): Promise<void> {
@@ -33,10 +40,25 @@ export class UsersHandler extends BaseRequestHandler {
         if (user) {
           this.respondJsonObject(HTTP_CODES.OK, user);
         } else {
-          this.respondBadRequest('userId not present in request');
+          this.respondBadRequest("userId not present in request");
         }
       }
     }
+  }
+
+  public async operationAuthorized(operation: AccessRight) {
+    const tokenId = this.req.headers.authorization;
+    if (tokenId) { 
+      const tokenRights = await this.tokenValidator.validateToken(tokenId);
+      if (tokenRights.accessRights.includes(operation)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+
   }
 
 }

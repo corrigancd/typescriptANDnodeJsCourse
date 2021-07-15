@@ -1,13 +1,11 @@
-
 import Nedb from "nedb";
-import { SessionToken } from '../Server/Model';
+import { SessionToken } from "../Server/Model";
 
 export class SessionTokenDBAccess {
-
   private nedb: Nedb;
 
   public constructor() {
-    this.nedb = new Nedb('database/Tokens.db');
+    this.nedb = new Nedb("database/Tokens.db");
     this.nedb.loadDatabase();
   }
 
@@ -23,19 +21,24 @@ export class SessionTokenDBAccess {
     });
   }
 
-  // public async getSessionToken(username: string, password: string): Promise<UserCredentials | undefined>  {
-  //   return new Promise((resolve, reject) => {
-  //     this.nedb.find({username, password}, (err: Error | null, results: UserCredentials[]) => {
-  //       if (err) {
-  //         reject(err);
-  //       } else {
-  //         if (results.length === 0) {
-  //           resolve(undefined);
-  //         } else {
-  //          resolve(results[0]);
-  //         }
-  //       }
-  //     });
-  //   });
-  // }
+  public async getSessionToken(
+    tokenId: string
+  ): Promise<SessionToken | undefined> {
+    return new Promise((resolve, reject) => {
+      this.nedb.find(
+        { tokenId },
+        (err: Error | null, tokens: SessionToken[]) => {
+          if (err) {
+            reject(err);
+          } else {
+            if (tokens.length === 0) {
+              resolve(undefined);
+            } else {
+              resolve(tokens[0]);
+            }
+          }
+        }
+      );
+    });
+  }
 }
