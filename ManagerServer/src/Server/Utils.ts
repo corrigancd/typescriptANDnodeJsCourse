@@ -12,11 +12,11 @@ export class Utils {
     return "";
   }
 
-  public static getUrlParameters(url: string | undefined): any {// UrlWithParsedQuery {
+  public static getUrlParameters(url: string | undefined): UrlWithParsedQuery | undefined {
     if (url) {
       return parse(url, true);
     } else {
-      return '';
+      return undefined;
     }
   }
 }

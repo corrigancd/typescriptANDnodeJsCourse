@@ -17,6 +17,16 @@ export abstract class BaseRequestHandler {
     this.res.write("not found");
   }
 
+  protected respondJsonObject(code: HTTP_CODES, responseObject: any) {
+    this.res.writeHead(code, { "Content-Type": "application/json" });
+    this.res.write(JSON.stringify(responseObject));
+  }
+
+  protected respondBadRequest(message: string) {
+    this.res.statusCode = HTTP_CODES.BAD_REQUEST;
+    this.res.write(message);
+  }
+
   protected async getRequestBody(): Promise<any> {
     return await new Promise((resolve, reject) => {
       let body = "";

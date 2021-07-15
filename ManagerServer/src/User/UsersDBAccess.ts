@@ -21,25 +21,19 @@ export class UsersDBAccess {
     });
   }
 
-  public async getUser(
-    username: string,
-    password: string
-  ): Promise<User | undefined> {
+  public async getUserById(userId: string): Promise<User | undefined> {
     return new Promise((resolve, reject) => {
-      this.nedb.find(
-        { username, password },
-        (err: Error | null, results: User[]) => {
-          if (err) {
-            reject(err);
+      this.nedb.find({ id: userId }, (err: Error | null, results: User[]) => {
+        if (err) {
+          reject(err);
+        } else {
+          if (results.length === 0) {
+            resolve(undefined);
           } else {
-            if (results.length === 0) {
-              resolve(undefined);
-            } else {
-              resolve(results[0]);
-            }
+            resolve(results[0]);
           }
         }
-      );
+      });
     });
   }
 }
