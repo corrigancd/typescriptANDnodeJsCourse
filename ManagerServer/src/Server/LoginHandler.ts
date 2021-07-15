@@ -1,7 +1,6 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { HTTP_CODES, HTTP_METHODS } from "../Shared/Model";
 import { Account, Handler, TokenGenerator } from "./Model";
-import { Utils } from "./Utils";
 
 export class LoginHandler implements Handler {
   private req: IncomingMessage;
