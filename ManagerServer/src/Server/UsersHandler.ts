@@ -32,6 +32,8 @@ export class UsersHandler extends BaseRequestHandler {
   }
 
   async handleGet() {
+    const operationAuthorized = await this.operationAuthorized(AccessRight.READ);
+    if (operationAuthorized) {
     const parsedUrl = Utils.getUrlParameters(this.req.url);
     if (parsedUrl) {
       const userId = parsedUrl.query.id;
@@ -43,6 +45,9 @@ export class UsersHandler extends BaseRequestHandler {
           this.respondBadRequest("userId not present in request");
         }
       }
+    }
+    } else {
+      this.responedUnauthorized('missing or invalid authentication');
     }
   }
 

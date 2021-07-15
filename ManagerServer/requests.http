@@ -19,7 +19,8 @@ Content-Type: application/json
     "password": "1234"
 }
 
-###
-
+### run the login successful request above, then navigate to 
+# /home/edwin/work/typescriptANDnodeJsCourse/ManagerServer/database/Tokens.db
+# to see the valid `tokenId`
 GET http://localhost:8080/users?id=testisfddd
-Authorization: testingauth
+Authorization: qnk9k276ec9
