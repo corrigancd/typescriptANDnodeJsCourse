@@ -13,7 +13,7 @@ export class UsersDBAccess {
   public async putUser(user: User) {
     if (!user.id) {
       user.id = Utils.generateRandomId();
-    };
+    }
     return new Promise<void>((resolve, reject) => {
       this.nedb.insert(user, (err: Error | null) => {
         if (err) {
@@ -36,6 +36,19 @@ export class UsersDBAccess {
           } else {
             resolve(results[0]);
           }
+        }
+      });
+    });
+  }
+
+  public async getUsersByName(name: string): Promise<User[] | undefined> {
+    const regEx = new RegExp(name);
+    return new Promise((resolve, reject) => {
+      this.nedb.find({ name: regEx }, (err: Error | null, results: User[]) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
         }
       });
     });

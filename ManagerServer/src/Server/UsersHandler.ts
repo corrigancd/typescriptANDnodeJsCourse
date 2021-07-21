@@ -41,14 +41,18 @@ export class UsersHandler extends BaseRequestHandler {
     if (operationAuthorized) {
       const parsedUrl = Utils.getUrlParameters(this.req.url);
       if (parsedUrl) {
-        const userId = parsedUrl.query.id;
-        if (userId) {
-          const user = await this.usersDBAccess.getUserById(String(userId));
+        if (parsedUrl.query.id) {
+          const user = await this.usersDBAccess.getUserById(String(parsedUrl.query.id)); // userId
           if (user) {
             this.respondJsonObject(HTTP_CODES.OK, user);
           } else {
             this.respondBadRequest("userId not present in request");
           }
+        } else if (parsedUrl.query.name) {
+          const users = await this.usersDBAccess.getUsersByName(String(parsedUrl.query.name));
+          this.respondJsonObject(HTTP_CODES.OK, users);
+        } else {
+          this.respondBadRequest('userId and name not present in request');
         }
       }
     } else {
@@ -60,9 +64,9 @@ export class UsersHandler extends BaseRequestHandler {
     const operationAuthorised = await this.operationAuthorized(AccessRight.CREATE);
     if (operationAuthorised) {
       try {
-      const user: User = await this.getRequestBody();
-      await this.usersDBAccess.putUser(user);
-      this.respondText(HTTP_CODES.CREATED, `user ${user.name} created`);
+        const user: User = await this.getRequestBody();
+        await this.usersDBAccess.putUser(user);
+        this.respondText(HTTP_CODES.CREATED, `user ${user.name} created`);
       } catch (err) {
         this.respondBadRequest(err.message);
       }
@@ -73,7 +77,7 @@ export class UsersHandler extends BaseRequestHandler {
 
   public async operationAuthorized(operation: AccessRight) {
     const tokenId = this.req.headers.authorization;
-    if (tokenId) { 
+    if (tokenId) {
       const tokenRights = await this.tokenValidator.validateToken(tokenId);
       if (tokenRights.accessRights.includes(operation)) {
         return true;
