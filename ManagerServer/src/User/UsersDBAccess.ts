@@ -1,5 +1,6 @@
 import { User } from "../Shared/Model";
 import Nedb from "nedb";
+import { Utils } from "../Server/Utils";
 
 export class UsersDBAccess {
   private nedb: Nedb;
@@ -10,6 +11,9 @@ export class UsersDBAccess {
   }
 
   public async putUser(user: User) {
+    if (!user.id) {
+      user.id = Utils.generateRandomId();
+    };
     return new Promise<void>((resolve, reject) => {
       this.nedb.insert(user, (err: Error | null) => {
         if (err) {

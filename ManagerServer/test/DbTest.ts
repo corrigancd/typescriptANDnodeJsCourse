@@ -7,12 +7,12 @@ class DbTest {
 }
 
 const db = new DbTest();
-// db.dbAccess.putUserCredential({
-//   username: 'user1',
-//   password: 'password1',
-//   accessRights: [1,2,3],
-//   // _id: 'bal'
-// });
+db.dbAccess.putUserCredential({
+  username: 'john',
+  password: '1234',
+  accessRights: [0,1,2,3],
+  // _id: 'bal'
+});
 
 // new DbTest().userDbAccess.putUser({
 //   age: 30,

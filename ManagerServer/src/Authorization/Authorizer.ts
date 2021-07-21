@@ -6,6 +6,7 @@ import {
   TokenState,
   TokenValidator,
 } from "../Server/Model";
+import { Utils } from "../Server/Utils";
 import { SessionTokenDBAccess } from "./SessionTokenDBAccess";
 import { UserCredentialsDBAccess } from "./UserCredentialsDBAccess";
 
@@ -23,7 +24,7 @@ export class Authorizer implements TokenGenerator, TokenValidator {
 
     if (resultAccount) {
       const token: SessionToken = {
-        tokenId: this.generateRandomTokenId(),
+        tokenId: Utils.generateRandomId(),
         username: resultAccount.username,
         valid: true,
         expirationTime: this.generateExpirationTime(),
@@ -59,9 +60,5 @@ export class Authorizer implements TokenGenerator, TokenValidator {
   private generateExpirationTime = (): Date => {
     const hour = 60 * 60 * 10000;
     return new Date(Date.now() + hour);
-  };
-
-  private generateRandomTokenId = (): string => {
-    return Math.random().toString(36).slice(2);
   };
 }

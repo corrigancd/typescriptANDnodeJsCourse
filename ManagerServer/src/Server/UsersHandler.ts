@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { BaseRequestHandler } from "./BaseRequestHandler";
 import { UsersDBAccess } from "../User/UsersDBAccess";
-import { AccessRight, HTTP_CODES, HTTP_METHODS } from "../Shared/Model";
+import { AccessRight, HTTP_CODES, HTTP_METHODS, User } from "../Shared/Model";
 import { Utils } from "./Utils";
 import { TokenValidator } from "./Model";
 
@@ -25,6 +25,9 @@ export class UsersHandler extends BaseRequestHandler {
       case HTTP_METHODS.GET:
         await this.handleGet();
         break;
+      case HTTP_METHODS.PUT:
+        await this.handlePut();
+        break;
       default:
         this.handleNotFound();
         break;
@@ -32,22 +35,39 @@ export class UsersHandler extends BaseRequestHandler {
   }
 
   async handleGet() {
-    const operationAuthorized = await this.operationAuthorized(AccessRight.READ);
+    const operationAuthorized = await this.operationAuthorized(
+      AccessRight.READ
+    );
     if (operationAuthorized) {
-    const parsedUrl = Utils.getUrlParameters(this.req.url);
-    if (parsedUrl) {
-      const userId = parsedUrl.query.id;
-      if (userId) {
-        const user = await this.usersDBAccess.getUserById(String(userId));
-        if (user) {
-          this.respondJsonObject(HTTP_CODES.OK, user);
-        } else {
-          this.respondBadRequest("userId not present in request");
+      const parsedUrl = Utils.getUrlParameters(this.req.url);
+      if (parsedUrl) {
+        const userId = parsedUrl.query.id;
+        if (userId) {
+          const user = await this.usersDBAccess.getUserById(String(userId));
+          if (user) {
+            this.respondJsonObject(HTTP_CODES.OK, user);
+          } else {
+            this.respondBadRequest("userId not present in request");
+          }
         }
       }
-    }
     } else {
-      this.responedUnauthorized('missing or invalid authentication');
+      this.respondUnauthorized("missing or invalid authentication");
+    }
+  }
+
+  private async handlePut() {
+    const operationAuthorised = await this.operationAuthorized(AccessRight.CREATE);
+    if (operationAuthorised) {
+      try {
+      const user: User = await this.getRequestBody();
+      await this.usersDBAccess.putUser(user);
+      this.respondText(HTTP_CODES.CREATED, `user ${user.name} created`);
+      } catch (err) {
+        this.respondBadRequest(err.message);
+      }
+    } else {
+      this.respondUnauthorized("user is not authorised to make this PUT request");
     }
   }
 
@@ -63,7 +83,5 @@ export class UsersHandler extends BaseRequestHandler {
     } else {
       return false;
     }
-
   }
-
 }

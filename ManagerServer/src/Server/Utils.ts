@@ -12,11 +12,17 @@ export class Utils {
     return "";
   }
 
-  public static getUrlParameters(url: string | undefined): UrlWithParsedQuery | undefined {
+  public static getUrlParameters(
+    url: string | undefined
+  ): UrlWithParsedQuery | undefined {
     if (url) {
       return parse(url, true);
     } else {
       return undefined;
     }
   }
+
+  public static generateRandomId = (): string => {
+    return Math.random().toString(36).slice(2);
+  };
 }

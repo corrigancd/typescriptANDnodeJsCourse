@@ -19,8 +19,23 @@ Content-Type: application/json
     "password": "1234"
 }
 
-### run the login successful request above, then navigate to 
+### run login successful request above, then navigate to 
 # /home/edwin/work/typescriptANDnodeJsCourse/ManagerServer/database/Tokens.db
 # to see the valid `tokenId`
 GET http://localhost:8080/users?id=testisfddd
 Authorization: qnk9k276ec9
+
+
+### run login successful request above, then navigate to 
+# /home/edwin/work/typescriptANDnodeJsCourse/ManagerServer/database/Tokens.db
+# to see the valid `tokenId`
+PUT http://localhost:8080/users
+Authorization: zc08ttutu7
+Content-Type: application/json
+
+{
+    "age": 45,
+    "email": "some@sillyemail.com",
+    "name": "john",
+    "workingPosition": 3
+}
