@@ -28,9 +28,31 @@ export class UsersHandler extends BaseRequestHandler {
       case HTTP_METHODS.PUT:
         await this.handlePut();
         break;
+      case HTTP_METHODS.DELETE:
+        await this.handleDelete();
+        break;
       default:
         this.handleNotFound();
         break;
+    }
+  }
+
+  private async handleDelete() {
+    const operationAuthorized = await this.operationAuthorized(AccessRight.DELETE);
+    if (operationAuthorized) {
+      const parsedUrl = Utils.getUrlParameters(this.req.url);
+      if (parsedUrl) {
+        if (parsedUrl.query.id) {
+          const deleteResult = await this.usersDBAccess.deleteUserById(String(parsedUrl.query.id));
+          if (deleteResult) {
+            this.respondText(HTTP_CODES.OK, `user ${parsedUrl.query.id} deleted`)
+          } else {
+            this.respondText(HTTP_CODES.NOT_FOUND, `user ${parsedUrl.query.id} was not deleted`)
+          }
+        } else {
+          this.respondBadRequest('missing id in the request');
+        }
+      }
     }
   }
 
@@ -42,17 +64,21 @@ export class UsersHandler extends BaseRequestHandler {
       const parsedUrl = Utils.getUrlParameters(this.req.url);
       if (parsedUrl) {
         if (parsedUrl.query.id) {
-          const user = await this.usersDBAccess.getUserById(String(parsedUrl.query.id)); // userId
+          const user = await this.usersDBAccess.getUserById(
+            String(parsedUrl.query.id)
+          ); // userId
           if (user) {
             this.respondJsonObject(HTTP_CODES.OK, user);
           } else {
             this.respondBadRequest("userId not present in request");
           }
         } else if (parsedUrl.query.name) {
-          const users = await this.usersDBAccess.getUsersByName(String(parsedUrl.query.name));
+          const users = await this.usersDBAccess.getUsersByName(
+            String(parsedUrl.query.name)
+          );
           this.respondJsonObject(HTTP_CODES.OK, users);
         } else {
-          this.respondBadRequest('userId and name not present in request');
+          this.respondBadRequest("userId and name not present in request");
         }
       }
     } else {
@@ -61,7 +87,9 @@ export class UsersHandler extends BaseRequestHandler {
   }
 
   private async handlePut() {
-    const operationAuthorised = await this.operationAuthorized(AccessRight.CREATE);
+    const operationAuthorised = await this.operationAuthorized(
+      AccessRight.CREATE
+    );
     if (operationAuthorised) {
       try {
         const user: User = await this.getRequestBody();
@@ -71,7 +99,9 @@ export class UsersHandler extends BaseRequestHandler {
         this.respondBadRequest(err.message);
       }
     } else {
-      this.respondUnauthorized("user is not authorised to make this PUT request");
+      this.respondUnauthorized(
+        "user is not authorised to make this PUT request"
+      );
     }
   }
 

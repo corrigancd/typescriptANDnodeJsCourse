@@ -25,11 +25,11 @@ Content-Type: application/json
 
 ### getting user by id
 GET http://localhost:8080/users?id=testisfddd
-Authorization: zc08ttutu7
+Authorization: puppy9w68a
 
 ### getting user by name
 GET http://localhost:8080/users?name=j
-Authorization: zc08ttutu7
+Authorization: puppy9w68a
 
 ### adding a user to db
 PUT http://localhost:8080/users
@@ -42,3 +42,7 @@ Content-Type: application/json
     "name": "john",
     "workingPosition": 3
 }
+
+### deleting user by id
+DELETE http://localhost:8080/users?id=testdelete3
+Authorization: puppy9w68a
