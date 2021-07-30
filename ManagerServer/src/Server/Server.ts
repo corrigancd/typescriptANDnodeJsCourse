@@ -4,6 +4,8 @@ import { LoginHandler } from "./LoginHandler";
 import { UsersHandler } from "./UsersHandler";
 import { Utils } from "./Utils";
 
+const port: number = 8080;
+
 export class Server {
   private authorizer: Authorizer = new Authorizer;
 
@@ -26,7 +28,7 @@ export class Server {
       }
 
       res.end();
-    }).listen(8080);
-    console.log("server started");
+    }).listen(port);
+    console.log(`server started on port ${8080}`);
   }
 }
