@@ -4,7 +4,7 @@
   "description": "Client for typescript and nodejs course",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack"
+    "webpack": "webpack --watch"
   },
   "author": "ed",
   "license": "MIT",
