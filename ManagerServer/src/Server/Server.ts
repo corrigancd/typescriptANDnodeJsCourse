@@ -15,6 +15,8 @@ export class Server {
     createServer(async (req: IncomingMessage, res: ServerResponse) => {
       // The "?" below indicates that url may be defined or undefined
       console.log("got request from: ", req.url?.length);
+      this.addCorsHeaders(res);
+
       const basePath = Utils.getUrlBasePath(req.url);
 
       switch (basePath) {
@@ -30,5 +32,10 @@ export class Server {
       res.end();
     }).listen(port);
     console.log(`server started on port ${8080}`);
+  }
+
+  private addCorsHeaders(res: ServerResponse) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
   }
 }
