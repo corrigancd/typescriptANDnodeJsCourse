@@ -1,6 +1,8 @@
+import { LoginService } from "../services/LoginService";
 import { BaseController } from "./BaseController";
 
 export class LoginController extends BaseController {
+  private loginService = new LoginService();
   private getBreakElement() {
     return this.createElement("br");
   }
@@ -26,9 +28,20 @@ export class LoginController extends BaseController {
     this.errorLabel.style.visibility = "visible";
   }
 
-  private loginButton = this.createElement("button", "Login", () => {
+  private loginButton = this.createElement("button", "Login", async () => {
     if (this.userNameInput.value && this.passwordInput.value) {
       this.resetErrorLabel();
+      const result = await this.loginService.login(
+        this.userNameInput.value,
+        this.passwordInput.value
+      );
+
+      if (result) {
+        this.router.switchToDashboardView(result);
+      } else {
+        this.showErrorLabel("Wrong username or password!");
+      }
+
     } else {
       this.showErrorLabel("Please fill in both fields!");
     }
