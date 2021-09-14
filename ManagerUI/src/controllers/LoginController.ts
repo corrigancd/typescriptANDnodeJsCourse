@@ -1,5 +1,6 @@
 import { LoginService } from "../services/LoginService";
 import { BaseController } from "./BaseController";
+import { LinkTextValue } from "./Decorators";
 
 export class LoginController extends BaseController {
   private loginService = new LoginService();
@@ -17,20 +18,12 @@ export class LoginController extends BaseController {
   private errorLabel = this.createElement("label");
   private break3 = this.createElement("br");
 
-  private resetErrorLabel() {
-    this.errorLabel.innerText = "Please fill in both fields!";
-    this.errorLabel.style.visibility = "red";
-    this.errorLabel.style.visibility = "hidden";
-  }
-
-  private showErrorLabel(errorMessage: string) {
-    this.errorLabel.innerText = errorMessage;
-    this.errorLabel.style.visibility = "visible";
-  }
+  @LinkTextValue('errorLabel')
+  private errorLabelText: string = "";
 
   private loginButton = this.createElement("button", "Login", async () => {
     if (this.userNameInput.value && this.passwordInput.value) {
-      this.resetErrorLabel();
+      this.errorLabelText = '';
       const result = await this.loginService.login(
         this.userNameInput.value,
         this.passwordInput.value
@@ -39,11 +32,10 @@ export class LoginController extends BaseController {
       if (result) {
         this.router.switchToDashboardView(result);
       } else {
-        this.showErrorLabel("Wrong username or password!");
+        this.errorLabelText = "Wrong username or password!";
       }
-
     } else {
-      this.showErrorLabel("Please fill in both fields!");
+      this.errorLabelText = "Please fill in both fields!";
     }
   });
 
@@ -51,6 +43,7 @@ export class LoginController extends BaseController {
     this.passwordInput.type = "Password";
     this.errorLabel.style.color = "red";
     this.errorLabel.style.visibility = "hidden";
+    this.errorLabel.id = 'errorLabel';
 
     return this.container;
   }
