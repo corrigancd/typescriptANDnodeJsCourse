@@ -4,7 +4,9 @@ import { UsersDBAccess } from "../User/UsersDBAccess";
 import { AccessRight, HTTP_CODES, HTTP_METHODS, User } from "../Shared/Model";
 import { Utils } from "./Utils";
 import { TokenValidator } from "./Model";
+import { countInstances } from "../Shared/ObjectsCounter";
 
+@countInstances
 export class UsersHandler extends BaseRequestHandler {
   private usersDBAccess: UsersDBAccess = new UsersDBAccess();
   private tokenValidator: TokenValidator;

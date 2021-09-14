@@ -19,6 +19,9 @@ Content-Type: application/json
     "password": "1234"
 }
 
+###
+GET http://localhost:8080/systemInfo
+
 ### For any query below run login successful request above, then navigate to 
 # /home/edwin/work/typescriptANDnodeJsCourse/ManagerServer/database/Tokens.db
 # to see the valid `tokenId`
