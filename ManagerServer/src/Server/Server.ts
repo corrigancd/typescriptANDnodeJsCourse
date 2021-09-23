@@ -8,11 +8,12 @@ import { Utils } from "./Utils";
 const port: number = 8080;
 
 export class Server {
-  private authorizer: Authorizer = new Authorizer;
+  private authorizer: Authorizer = new Authorizer();
+  private loginHandler: LoginHandler = new LoginHandler(this.authorizer);
+  private usersHandler: UsersHandler = new UsersHandler(this.authorizer);
 
   // needs to be public because this function is called from Launcher.ts
   public createServer() {
-    
     createServer(async (req: IncomingMessage, res: ServerResponse) => {
       // The "?" below indicates that url may be defined or undefined
       console.log("got request from: ", req.url?.length);
@@ -21,13 +22,17 @@ export class Server {
       const basePath = Utils.getUrlBasePath(req.url);
 
       switch (basePath) {
-        case 'systemInfo':
-          res.write(Monitor.printInstances())
+        case "systemInfo":
+          res.write(Monitor.printInstances());
         case "login":
-          await new LoginHandler(req, res, this.authorizer).handleRequest();
+          this.loginHandler.setRequest(req);
+          this.loginHandler.setResponse(res);
+          await this.loginHandler.handleRequest(req, res);
           break;
-          case "users": 
-          await new UsersHandler(req, res, this.authorizer).handleRequest();
+        case "users":
+          this.usersHandler.setRequest(req);
+          this.usersHandler.setResponse(res);
+          await this.usersHandler.handleRequest(req, res);
         default:
           break;
       }
@@ -38,8 +43,8 @@ export class Server {
   }
 
   private addCorsHeaders(res: ServerResponse) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', '*');
-    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader("Access-Control-Allow-Methods", "*");
   }
 }

@@ -9,21 +9,19 @@ export class LoginHandler extends BaseRequestHandler {
   private tokenGenerator: TokenGenerator;
 
   public constructor(
-    req: IncomingMessage,
-    res: ServerResponse,
-    tokenGenerator: TokenGenerator
+    tokenGenerator: TokenGenerator,
   ) {
-    super(req, res);
+    super({} as any, {} as any);
     this.tokenGenerator = tokenGenerator;
   }
 
-  public async handleRequest(): Promise<void> {
-    switch (this.req.method) {
+  public async handleRequest(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    switch (req.method) {
       case HTTP_METHODS.POST:
         await this.handlePost();
         break;
       case HTTP_METHODS.OPTIONS:
-        this.res.writeHead(HTTP_CODES.OK);
+        res.writeHead(HTTP_CODES.OK);
         break;
       default:
         this.handleNotFound();

@@ -10,7 +10,15 @@ export abstract class BaseRequestHandler {
     this.res = res;
   }
 
-  abstract handleRequest(): Promise<void>;
+  public setRequest (req: IncomingMessage) {
+    this.req = req;
+  }
+
+  public setResponse (res: ServerResponse) {
+    this.res = res;
+  }
+
+  abstract handleRequest(req: IncomingMessage, res: ServerResponse): Promise<void>;
 
   protected async handleNotFound() {
     this.res.statusCode = HTTP_CODES.NOT_FOUND;

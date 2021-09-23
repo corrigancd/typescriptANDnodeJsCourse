@@ -12,20 +12,16 @@ export class UsersHandler extends BaseRequestHandler {
   private tokenValidator: TokenValidator;
 
   public constructor(
-    req: IncomingMessage,
-    res: ServerResponse,
     tokenValidator: TokenValidator
   ) {
-    super(req, res);
-    this.req = req;
-    this.res = res;
+    super({} as any, {} as any);
     this.tokenValidator = tokenValidator;
   }
 
-  async handleRequest(): Promise<void> {
-    switch (this.req.method) {
+  async handleRequest(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    switch (req.method) {
       case HTTP_METHODS.OPTIONS:
-        this.res.writeHead(HTTP_CODES.OK);
+        res.writeHead(HTTP_CODES.OK);
         break;
       case HTTP_METHODS.GET:
         await this.handleGet();
@@ -100,7 +96,7 @@ export class UsersHandler extends BaseRequestHandler {
         const user: User = await this.getRequestBody();
         await this.usersDBAccess.putUser(user);
         this.respondText(HTTP_CODES.CREATED, `user ${user.name} created`);
-      } catch (err) {
+      } catch (err: any) {
         this.respondBadRequest(err.message);
       }
     } else {
