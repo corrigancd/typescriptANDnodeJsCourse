@@ -6,3 +6,6 @@ dist
 
 # don't lint nyc converage output
 converage
+
+# don't lint webpack.config.js
+webpack.config.js

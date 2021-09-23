@@ -1,24 +1,24 @@
-import { SessionToken } from "../models/AuthenticationModels";
+import { SessionToken } from '../models/AuthenticationModels';
 
-const baseUrl = "http://localhost:8080/";
-const loginUrl = baseUrl + "login";
+const baseUrl = 'http://localhost:8080/';
+const loginUrl = baseUrl + 'login';
 
 export class LoginService {
   public async login(
     username: string,
-    password: string
+    password: string,
   ): Promise<SessionToken | undefined> {
     const options = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
     };
 
     const result = await fetch(loginUrl, options);
     if (result.status === 201) {
-      return await result.json()
+      return result.json();
     } else {
       return undefined;
     }

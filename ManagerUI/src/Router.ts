@@ -1,19 +1,19 @@
-import { DashboardController } from "./controllers/DashboardController";
-import { LoginController } from "./controllers/LoginController";
-import { MainController } from "./controllers/MainController";
-import { SessionToken } from "./models/AuthenticationModels";
+import { DashboardController } from './controllers/DashboardController';
+import { LoginController } from './controllers/LoginController';
+import { MainController } from './controllers/MainController';
+import { SessionToken } from './models/AuthenticationModels';
 
 export class Router {
-  private mainElement = document.getElementById("main-container");
+  private mainElement = document.getElementById('main-container');
 
   public handleRequest(): void {
-    console.log("handling request for route", this.getRoute());
+    console.log('handling request for route', this.getRoute());
 
     switch (this.getRoute()) {
-      case "/login":
+      case '/login':
         this.switchToLoginView();
         break;
-      case "/board":
+      case '/board':
         this.switchToDashboardView(undefined);
         break;
       default:
@@ -27,9 +27,9 @@ export class Router {
 
   public switchToDashboardView(sessionToken: SessionToken | undefined): void {
     if (this.mainElement) {
-      this.mainElement.innerHTML = "";
+      this.mainElement.innerHTML = '';
       const dashboardController: DashboardController = new DashboardController(
-        this
+        this,
       );
       if (sessionToken) {
         dashboardController.setSessionToken(sessionToken);
@@ -40,7 +40,7 @@ export class Router {
 
   public switchToLoginView(): void {
     if (this.mainElement) {
-      this.mainElement.innerHTML = "";
+      this.mainElement.innerHTML = '';
       const loginController: LoginController = new LoginController(this);
       this.mainElement.append(loginController.createView());
     }

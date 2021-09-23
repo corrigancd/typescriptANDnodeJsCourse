@@ -1,4 +1,4 @@
-import { BaseController } from "./BaseController";
+import { BaseController } from './BaseController';
 
 export function LinkTextValue(elementId: string) {
   return function (target: BaseController, key: string) {
@@ -14,9 +14,9 @@ export function LinkTextValue(elementId: string) {
         property = newValue;
         element.innerText = newValue;
         if (newValue) {
-          element.style.visibility = "visible";
+          element.style.visibility = 'visible';
         } else {
-          element.style.visibility = "hidden";
+          element.style.visibility = 'hidden';
         }
       }
     };

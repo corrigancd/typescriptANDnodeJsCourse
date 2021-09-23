@@ -1,10 +1,10 @@
-import { Router } from "./Router";
+import { Router } from './Router';
 
 export class Main {
   private router: Router;
 
   public constructor() {
-    console.log("Constructed new instance of the program");
+    console.log('Constructed new instance of the program');
     this.router = new Router();
   }
 

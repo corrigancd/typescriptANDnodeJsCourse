@@ -1,7 +1,8 @@
-import { Router } from "../Router";
+import { Router } from '../Router';
 
 export abstract class BaseController {
-  protected container: HTMLDivElement = document.createElement("div");
+  protected container: HTMLDivElement = document.createElement('div');
+
   protected router: Router;
 
   public constructor(router: Router) {
@@ -18,7 +19,7 @@ export abstract class BaseController {
   protected createElement<K extends keyof HTMLElementTagNameMap>(
     elementType: K,
     innerText?: string,
-    action?: any
+    action?: any,
   ): HTMLElementTagNameMap[K] {
     const element = document.createElement(elementType);
     if (innerText) {
@@ -33,6 +34,6 @@ export abstract class BaseController {
   }
    
   protected insertBreak() {
-    this.createElement("br");
+    this.createElement('br');
   }
 }

@@ -1,32 +1,32 @@
-import { User } from "../models/DataModels";
+import { User } from '../models/DataModels';
 
-const baseUrl = "http://localhost:8080/";
-const usersUrl = baseUrl + "users";
+const baseUrl = 'http://localhost:8080/';
+const usersUrl = baseUrl + 'users';
 
 export class DataService {
   public async getUsers(
     Authorization: string,
-    nameQuery: string
+    nameQuery: string,
   ): Promise<User[]> {
-    const url = usersUrl + "?name=" + nameQuery;
+    const url = usersUrl + '?name=' + nameQuery;
     const options = {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization,
       },
     };
 
     const result = await fetch(url, options);
-    return await result.json();
+    return result.json();
   }
 
-    public async deleteUser(
+  public async deleteUser(
     Authorization: string,
-    user: User
+    user: User,
   ): Promise<void> {
-    const url = usersUrl + "?id=" + user.id;
+    const url = usersUrl + '?id=' + user.id;
     const options = {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
         Authorization,
       },

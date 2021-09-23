@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/extensions */
 import { resolve as _resolve } from 'path';
 
 export const entry = './src/Main.ts';
