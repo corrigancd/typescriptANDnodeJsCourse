@@ -19,7 +19,7 @@ export class LoginController extends BaseController {
   private break3 = this.createElement("br");
 
   @LinkTextValue('errorLabel')
-  private errorLabelText: string = "";
+  private errorLabelText = "";
 
   private loginButton = this.createElement("button", "Login", async () => {
     if (this.userNameInput.value && this.passwordInput.value) {

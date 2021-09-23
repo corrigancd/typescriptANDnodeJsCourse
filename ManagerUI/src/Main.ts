@@ -8,7 +8,7 @@ export class Main {
     this.router = new Router();
   }
 
-  public launchApp() {
+  public launchApp(): void {
     this.router.handleRequest();
   }
 }

@@ -43,15 +43,17 @@ export class DashboardController extends BaseController {
     }
   }
   private async triggerAction(right: AccessRight) {
+    const users = await this.dataService.getUsers(
+      this.sessionToken!.tokenId,
+      this.searchArea!.value
+    );
     switch (right) {
       case AccessRight.READ:
-        this.searchArea && console.log(this.searchArea.value);
-        const users = await this.dataService.getUsers(
-          this.sessionToken!.tokenId,
-          this.searchArea!.value
-        );
         for (const user of users) {
-          this.selectedLabel = this.createElement("label", JSON.stringify(user));
+          this.selectedLabel = this.createElement(
+            "label",
+            JSON.stringify(user)
+          );
           this.selectedLabel.onclick = () => {
             this.selectedLabel!.classList.toggle("selectedLabel");
             this.selectedUser = user;
@@ -68,10 +70,8 @@ export class DashboardController extends BaseController {
             this.sessionToken!.tokenId,
             this.selectedUser
           );
-          this.selectedLabel!.innerHTML = '';
+          this.selectedLabel!.innerHTML = "";
         }
-        break;
-      case AccessRight.UPDATE:
         break;
       default:
     }

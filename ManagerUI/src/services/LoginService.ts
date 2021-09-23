@@ -8,7 +8,7 @@ export class LoginService {
     username: string,
     password: string
   ): Promise<SessionToken | undefined> {
-    let options = {
+    const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
